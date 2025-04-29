@@ -1,27 +1,31 @@
 #include "raylib.h"
-#include "resource_dir.h"	
+#include "entity.h"
+#include "world.h"
 
-int main ()
-{
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-	InitWindow(1280, 800, "Hello Raylib");
-	SearchAndSetResourceDir("resources");
-	Texture wabbit = LoadTexture("wabbit_alpha.png");
-	
+int main() {
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+    InitWindow(800, 800, "fysix ngin");
 
-	while (!WindowShouldClose())
-	{
-		BeginDrawing();
+    World world({0, 980.0f});
 
-		ClearBackground(BLACK);
+    world.addEntity(Entity(1.0f, {400, 100}));
+    world.addEntity(Entity(2.0f, {200,  50}));
 
-		DrawText("Hello sagniklib", 200,200,20,WHITE);
+    while (!WindowShouldClose()) {
+        float dt = GetFrameTime();
 
-		DrawTexture(wabbit, 400, 200, WHITE);
-		
-		EndDrawing();
-	}
-	UnloadTexture(wabbit);
-	CloseWindow();
-	return 0;
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Vector2 mousePos = GetMousePosition();
+            world.addEntity(Entity(1.0f, mousePos));
+        }
+        world.update(dt);
+
+        BeginDrawing();
+            ClearBackground(BLACK);
+            world.draw();
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
 }
