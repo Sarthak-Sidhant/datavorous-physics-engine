@@ -15,7 +15,7 @@ void Entity::integrate(float dt) {
     acceleration.x = forceApplied.x / mass;
     acceleration.y = forceApplied.y / mass;
 
-    // TODO: check if it's called semi implicit euler
+    // it's called semi implicit euler
 
     velocity.x += acceleration.x * dt;
     velocity.y += acceleration.y * dt;
@@ -26,23 +26,3 @@ void Entity::integrate(float dt) {
     forceApplied = {0,0};
 }
 
-bool Entity::checkCollision(Entity& A, Entity& B, Vector2& outNormal, float& outPenetration) {
-    Vector2 dist = { A.position.x - B.position.x, 
-                        A.position.y - B.position.y};
-
-    float dist2 = (dist.x*dist.x) + (dist.y*dist.y);
-    float distR = A.radius + B.radius;
-    if ((distR*distR)<dist2) return false; // r1+r2<d
-
-    float d = sqrt(dist2);
-
-    if (d>0){
-        outNormal = { d.x/d, d.y/d }; // normal vec
-    }
-    else {
-        outNormal = {1,0};
-        d = distR - 1.0f; // slight displacement
-    }
-    outPenetration = distR - d; // penetration val
-    return true;
-}
