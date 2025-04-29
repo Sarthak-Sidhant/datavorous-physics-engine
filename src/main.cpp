@@ -8,20 +8,20 @@ int main() {
 
     World world({0, 980.0f});
 
-    world.addEntity(Entity(1.0f, {400, 100}));
-    world.addEntity(Entity(2.0f, {200,  50}));
+    world.addEntity(Entity(1.0f, {400, 400}, STATIC_BODY));
+    world.addEntity(Entity(2.0f, {300, 400}, STATIC_BODY));
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Vector2 mousePos = GetMousePosition();
-            world.addEntity(Entity(1.0f, mousePos));
+            world.addEntity(Entity(1.0f, mousePos, RIGID_BODY));
         }
         world.update(dt);
 
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBackground((Color){2,18,41});
             world.draw();
         EndDrawing();
     }
